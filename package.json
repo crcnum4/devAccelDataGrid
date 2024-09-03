@@ -1,0 +1,43 @@
+{
+  "name": "devaccel-data-grid",
+  "version": "1.0.1",
+  "description": "Dynamic table library.",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crcnum4/devAccelDataGrid.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run prettier && npm run lint"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "devAccel",
+    "DevAccelerator",
+    "Tables",
+    "DataGrid"
+  ],
+  "author": "Clifton Choiniere (crcnum4)",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=18",
+    "@fortawesome/free-solid-svg-icons": "=6",
+    "@fortawesome/react-fontawesome": ">=0.2"
+  },
+  "devDependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@types/react": "^18.3.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.5.4"
+  }
+}
