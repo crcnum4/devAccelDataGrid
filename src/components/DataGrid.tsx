@@ -17,11 +17,12 @@ const DataGrid: FC<Props> = props => {
 
   const renderHeaders = () => {
     const defaultStyle: CSSProperties = {
-      height: '30px',
       border: `1px solid ${SLATE}`,
       fontWeight: 'bold',
       color: '111111',
       backgroundColor: `${LIGHT_BLUE}`,
+      display: 'flex',
+      flexDirection: 'row',
     }
 
     const StickyStyle: CSSProperties = {
