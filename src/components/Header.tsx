@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { ColumnOptions } from '../types/Grid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons'
+import { SLATE } from '../types'
 
 type Props = {
   options: ColumnOptions
@@ -32,9 +33,10 @@ const Header: FC<Props> = ({ options }) => {
   return (
     <div
       style={{
-        padding: '1em',
+        padding: '.5em',
         display: 'flex',
         flexDirection: 'row',
+        border: `1px solid ${SLATE}`,
         width,
         ...options.headerOptions?.style,
       }}

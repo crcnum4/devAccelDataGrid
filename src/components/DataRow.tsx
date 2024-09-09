@@ -30,8 +30,6 @@ const DataRow: FC<Props> = ({ data, columOptionsList }) => {
       style={{
         display: 'flex',
         flexDirection: 'row',
-        height: '30px',
-        border: `1 px ${SLATE}`,
       }}
     >
       {renderCells()}

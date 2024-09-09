@@ -9,7 +9,7 @@ type Props = {
   tableData: GridContent
   columnOptionsList: ColumnOptions[]
   stickyHeaders?: boolean
-  tableProps: HTMLAttributes<HTMLDivElement>
+  tableProps?: HTMLAttributes<HTMLDivElement>
 }
 
 const DataGrid: FC<Props> = (props) => {
@@ -28,16 +28,17 @@ const DataGrid: FC<Props> = (props) => {
       position: 'relative',
       top: 0,
       zIndex: 100,
-      ...defaultStyle,
     }
 
-    return (
-      <div id='grid-header' style={props.stickyHeaders ? StickyStyle : defaultStyle}>
+    const content = (
+      <div id='grid-header' style={defaultStyle}>
         {props.columnOptionsList.map((option) => (
           <Header key={`header_${option.field}`} options={option} />
         ))}
       </div>
     )
+
+    return props.stickyHeaders ? <div style={StickyStyle}>{content}</div> : content
   }
 
   const renderContent = () => {
