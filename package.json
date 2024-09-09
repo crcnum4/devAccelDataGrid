@@ -2,8 +2,8 @@
   "name": "devaccel-data-grid",
   "version": "1.0.2",
   "description": "Dynamic table library.",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "main": "./dist/cjs/components/DataGrid.js",
+  "module": "./dist/esm/components/DataGrid.js",
   "types": "./dist/esm",
   "repository": {
     "type": "git",
