@@ -1,10 +1,10 @@
 import React from 'react'
 import { FC } from 'react'
 // import { data } from './sampleData'
-import { ColumnOptions } from 'devaccel-data-grid'
+// import {} from "devaccel-data-grid"
 
 const Example: FC = () => {
-  const tableOptions: ColumnOptions[] = []
+  // const tableOptions:  = []
 
   return <h1>test</h1>
 }

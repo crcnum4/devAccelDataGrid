@@ -1,10 +1,10 @@
 {
   "name": "devaccel-data-grid",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Dynamic table library.",
-  "main": "./dist/cjs/components/DataGrid.js",
-  "module": "./dist/esm/components/DataGrid.js",
-  "types": "./dist/esm",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.d.ts",
+  "types": "./dist/esm/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/crcnum4/devAccelDataGrid.git"
