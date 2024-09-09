@@ -44,7 +44,7 @@ const Header: FC<Props> = ({ options }) => {
         width,
         ...options.headerOptions?.style,
       }}
-      className={options.headerOptions?.className}
+      className='data-header'
     >
       {options.canLock && (
         <FontAwesomeIcon

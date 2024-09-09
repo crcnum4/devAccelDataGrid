@@ -2,7 +2,7 @@ import { CSSProperties, FC, HTMLAttributes } from 'react'
 import { ColumnOptions, GridContent } from '../types/Grid'
 import React from 'react'
 import Header from './Header'
-import { LIGHT_BLUE, SLATE } from '../types/colors'
+import { LIGHT_BLUE } from '../types/colors'
 import DataRow from './DataRow'
 
 type Props = {
@@ -17,7 +17,6 @@ const DataGrid: FC<Props> = props => {
 
   const renderHeaders = () => {
     const defaultStyle: CSSProperties = {
-      border: `1px solid ${SLATE}`,
       fontWeight: 'bold',
       color: '111111',
       backgroundColor: `${LIGHT_BLUE}`,
@@ -32,7 +31,7 @@ const DataGrid: FC<Props> = props => {
     }
 
     const content = (
-      <div id='grid-header' style={defaultStyle}>
+      <div className='grid-header' style={defaultStyle}>
         {props.columnOptionsList.map(option => (
           <Header key={`header_${option.field}`} options={option} />
         ))}
@@ -40,7 +39,9 @@ const DataGrid: FC<Props> = props => {
     )
 
     return props.stickyHeaders ? (
-      <div style={StickyStyle}>{content}</div>
+      <div className='sticky-wrapper' style={StickyStyle}>
+        {content}
+      </div>
     ) : (
       content
     )
@@ -58,7 +59,7 @@ const DataGrid: FC<Props> = props => {
 
   return (
     <div
-      id='grid-wapper'
+      className='grid-wapper'
       style={{
         width: '100%',
         overflow: 'scroll',

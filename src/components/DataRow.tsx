@@ -26,6 +26,7 @@ const DataRow: FC<Props> = ({ data, columOptionsList }) => {
 
   return (
     <div
+      className='data-row'
       style={{
         display: 'flex',
         flexDirection: 'row',
