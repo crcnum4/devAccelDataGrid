@@ -9,7 +9,7 @@ type Props = {
 
 const DataRow: FC<Props> = ({ data, columOptionsList }) => {
   const renderCells = () => {
-    return columOptionsList.map((option) => (
+    return columOptionsList.map(option => (
       <DataCell
         key={`${data['id']}_${option.field}`}
         value={

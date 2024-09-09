@@ -12,7 +12,7 @@ type Props = {
   tableProps?: HTMLAttributes<HTMLDivElement>
 }
 
-const DataGrid: FC<Props> = (props) => {
+const DataGrid: FC<Props> = props => {
   //todo extract colOptions to locked and unlocked
 
   const renderHeaders = () => {
@@ -32,18 +32,26 @@ const DataGrid: FC<Props> = (props) => {
 
     const content = (
       <div id='grid-header' style={defaultStyle}>
-        {props.columnOptionsList.map((option) => (
+        {props.columnOptionsList.map(option => (
           <Header key={`header_${option.field}`} options={option} />
         ))}
       </div>
     )
 
-    return props.stickyHeaders ? <div style={StickyStyle}>{content}</div> : content
+    return props.stickyHeaders ? (
+      <div style={StickyStyle}>{content}</div>
+    ) : (
+      content
+    )
   }
 
   const renderContent = () => {
-    return props.tableData.map((data) => (
-      <DataRow key={data.id} data={data} columOptionsList={props.columnOptionsList} />
+    return props.tableData.map(data => (
+      <DataRow
+        key={data.id}
+        data={data}
+        columOptionsList={props.columnOptionsList}
+      />
     ))
   }
 
