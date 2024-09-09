@@ -34,7 +34,11 @@ const Example: FC = () => {
 
   return (
     <div>
-      <DataGrid tableData={tableData} columnOptionsList={tableOptions} tableProps={{}} />
+      <DataGrid
+        tableData={tableData}
+        columnOptionsList={tableOptions}
+        tableProps={{}}
+      />
     </div>
   )
 }

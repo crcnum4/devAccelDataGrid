@@ -38,12 +38,20 @@ const DataGrid: FC<Props> = (props) => {
       </div>
     )
 
-    return props.stickyHeaders ? <div style={StickyStyle}>{content}</div> : content
+    return props.stickyHeaders ? (
+      <div style={StickyStyle}>{content}</div>
+    ) : (
+      content
+    )
   }
 
   const renderContent = () => {
     return props.tableData.map((data) => (
-      <DataRow key={data.id} data={data} columOptionsList={props.columnOptionsList} />
+      <DataRow
+        key={data.id}
+        data={data}
+        columOptionsList={props.columnOptionsList}
+      />
     ))
   }
 

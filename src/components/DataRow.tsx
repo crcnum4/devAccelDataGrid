@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import { ColumnOptions, GridData } from '../types/Grid'
-import { SLATE } from '../types/colors'
 import DataCell from './DataCell'
 
 type Props = {
