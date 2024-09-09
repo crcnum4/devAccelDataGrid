@@ -1,4 +1,6 @@
-export const data: { [key: string]: any } = [
+import { GridData } from 'devaccel-data-grid'
+
+export const data: GridData[] = [
   {
     id: '1',
     first_name: 'Juline',
