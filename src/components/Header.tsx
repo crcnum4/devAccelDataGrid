@@ -1,11 +1,7 @@
 import React, { FC } from 'react'
 import { ColumnOptions } from '../types/Grid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faEyeSlash,
-  faLock,
-  faLockOpen,
-} from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons'
 import { SLATE } from '../types'
 
 type Props = {
@@ -42,6 +38,10 @@ const Header: FC<Props> = ({ options }) => {
         flexDirection: 'row',
         border: `1px solid ${SLATE}`,
         width,
+        maxWidth: width,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
         ...options.headerOptions?.style,
       }}
       className='data-header'
@@ -55,11 +55,7 @@ const Header: FC<Props> = ({ options }) => {
       )}
       {options.header ? options.header : options.field}
       {options.canHide && (
-        <FontAwesomeIcon
-          icon={faEyeSlash}
-          color='red'
-          onClick={() => handleHideClick(options.field)}
-        />
+        <FontAwesomeIcon icon={faEyeSlash} color='red' onClick={() => handleHideClick(options.field)} />
       )}
     </div>
   )

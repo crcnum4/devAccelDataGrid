@@ -14,7 +14,15 @@ const DataCell: FC<Props> = ({ value, columnOptions }) => {
   return (
     <div
       className='data-cell'
-      style={{ padding: '0.5rem', width, border: `1px solid ${SLATE}` }}
+      style={{
+        padding: '0.5rem',
+        maxWidth: width,
+        width,
+        border: `1px solid ${SLATE}`,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+      }}
     >
       {value}
     </div>

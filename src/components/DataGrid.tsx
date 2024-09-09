@@ -48,13 +48,7 @@ const DataGrid: FC<Props> = props => {
   }
 
   const renderContent = () => {
-    return props.tableData.map(data => (
-      <DataRow
-        key={data.id}
-        data={data}
-        columOptionsList={props.columnOptionsList}
-      />
-    ))
+    return props.tableData.map(data => <DataRow key={data.id} data={data} columOptionsList={props.columnOptionsList} />)
   }
 
   return (
