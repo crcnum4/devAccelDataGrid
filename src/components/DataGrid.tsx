@@ -25,7 +25,7 @@ const DataGrid: FC<Props> = props => {
     }
 
     const StickyStyle: CSSProperties = {
-      position: 'relative',
+      position: 'sticky',
       top: 0,
       zIndex: 100,
     }
@@ -59,6 +59,7 @@ const DataGrid: FC<Props> = props => {
         overflow: 'scroll',
         display: 'flex',
         flexDirection: 'column',
+        maxHeight: '65vh',
       }}
     >
       {renderHeaders()}

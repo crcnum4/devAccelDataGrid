@@ -6,6 +6,22 @@ import DataGrid from 'devaccel-data-grid/dist/esm/components/DataGrid'
 
 const Example: FC = () => {
   const [tableData] = useState<GridData[]>(data)
+  const [hidden, setHidden] = useState<Set<string>>(new Set())
+  const [locked, setLocked] = useState<Set<string>>(new Set(['id']))
+
+  const handleLock = (field: string) => {
+    if (locked.has(field)) {
+      locked.delete(field)
+      setLocked(new Set(locked))
+    } else {
+      setLocked(new Set(locked).add(field))
+    }
+  }
+
+  const handleHide = (field: string): void => {
+    setHidden(new Set(hidden).add(field))
+  }
+
   const tableOptions: ColumnOptions[] = [
     {
       field: 'id',
@@ -13,12 +29,27 @@ const Example: FC = () => {
     },
     {
       field: 'first_name',
+      canLock: true,
+      canHide: true,
+      onHideClick: handleHide,
+      isHidden: hidden.has('first_name'),
+      onLockClick: handleLock,
+      isLocked: locked.has('first_name'),
     },
     {
       field: 'last_name',
+      canLock: true,
+      onLockClick: handleLock,
+      isLocked: locked.has('last_name'),
     },
     {
       field: 'email',
+      canLock: true,
+      canHide: true,
+      onHideClick: handleHide,
+      isHidden: hidden.has('email'),
+      onLockClick: handleLock,
+      isLocked: locked.has('email'),
     },
     {
       field: 'gender',
@@ -34,7 +65,7 @@ const Example: FC = () => {
 
   return (
     <div>
-      <DataGrid tableData={tableData} columnOptionsList={tableOptions} tableProps={{}} />
+      <DataGrid tableData={tableData} columnOptionsList={tableOptions} stickyHeaders />
     </div>
   )
 }

@@ -42,18 +42,19 @@ const Header: FC<Props> = ({ options }) => {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
+        textAlign: 'center',
         ...options.headerOptions?.style,
       }}
       className='data-header'
     >
       {options.canLock && (
         <FontAwesomeIcon
-          icon={options.isLocked ? faLock : faLockOpen}
+          icon={options.isLocked ? faLockOpen : faLock}
           color='blue'
           onClick={() => handleLockClick(options.field)}
         />
       )}
-      {options.header ? options.header : options.field}
+      <p style={{ margin: 'auto' }}>{options.header ? options.header : options.field}</p>
       {options.canHide && (
         <FontAwesomeIcon icon={faEyeSlash} color='red' onClick={() => handleHideClick(options.field)} />
       )}
