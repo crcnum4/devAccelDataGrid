@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { ColumnOptions } from '../types/Grid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons'
-import { SLATE } from '../types'
+import { LIGHT_BLUE, SLATE } from '../types'
 
 type Props = {
   options: ColumnOptions
@@ -37,6 +37,8 @@ const Header: FC<Props> = ({ options }) => {
         display: 'flex',
         flexDirection: 'row',
         border: `1px solid ${SLATE}`,
+        backgroundColor: `${LIGHT_BLUE}`,
+        minWidth: width,
         width,
         maxWidth: width,
         overflow: 'hidden',
@@ -52,11 +54,17 @@ const Header: FC<Props> = ({ options }) => {
           icon={options.isLocked ? faLockOpen : faLock}
           color='blue'
           onClick={() => handleLockClick(options.field)}
+          style={{ cursor: 'pointer' }}
         />
       )}
       <p style={{ margin: 'auto' }}>{options.header ? options.header : options.field}</p>
       {options.canHide && (
-        <FontAwesomeIcon icon={faEyeSlash} color='red' onClick={() => handleHideClick(options.field)} />
+        <FontAwesomeIcon
+          icon={faEyeSlash}
+          color='red'
+          onClick={() => handleHideClick(options.field)}
+          style={{ cursor: 'pointer' }}
+        />
       )}
     </div>
   )

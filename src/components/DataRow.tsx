@@ -9,19 +9,15 @@ type Props = {
 
 const DataRow: FC<Props> = ({ data, columOptionsList }) => {
   const renderCells = () => {
-    return columOptionsList.map(option => (
-      <DataCell
-        key={`${data['id']}_${option.field}`}
-        value={
-          option.render
-            ? option.render(data[option.field])
-            : option.formatter
-              ? option.formatter(data[option.field])
-              : data[option.field]
-        }
-        columnOptions={option}
-      />
-    ))
+    return columOptionsList
+      .filter(o => !o.isHidden)
+      .map(option => (
+        <DataCell
+          key={`${data['id']}_${option.field}`}
+          value={option.render ? option.render(data) : option.formatter ? option.formatter(data) : data[option.field]}
+          columnOptions={option}
+        />
+      ))
   }
 
   return (

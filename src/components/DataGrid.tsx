@@ -2,7 +2,6 @@ import { CSSProperties, FC, HTMLAttributes } from 'react'
 import { ColumnOptions, GridContent } from '../types/Grid'
 import React from 'react'
 import Header from './Header'
-import { LIGHT_BLUE } from '../types/colors'
 import DataRow from './DataRow'
 
 type Props = {
@@ -19,7 +18,6 @@ const DataGrid: FC<Props> = props => {
     const defaultStyle: CSSProperties = {
       fontWeight: 'bold',
       color: '111111',
-      backgroundColor: `${LIGHT_BLUE}`,
       display: 'flex',
       flexDirection: 'row',
     }
@@ -32,9 +30,22 @@ const DataGrid: FC<Props> = props => {
 
     const content = (
       <div className='grid-header' style={defaultStyle}>
-        {props.columnOptionsList.map(option => (
-          <Header key={`header_${option.field}`} options={option} />
-        ))}
+        {props.columnOptionsList
+          .filter(option => {
+            if (option.isHidden) return false
+            return option.isLocked
+          })
+          .map(option => (
+            <Header key={`header_${option.field}`} options={option} />
+          ))}
+        {props.columnOptionsList
+          .filter(option => {
+            if (option.isHidden) return false
+            return !option.isLocked
+          })
+          .map(option => (
+            <Header key={`header_${option.field}`} options={option} />
+          ))}
       </div>
     )
 
@@ -56,6 +67,7 @@ const DataGrid: FC<Props> = props => {
       className='grid-wapper'
       style={{
         width: '100%',
+        maxWidth: '90vw',
         overflow: 'scroll',
         display: 'flex',
         flexDirection: 'column',

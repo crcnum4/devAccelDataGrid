@@ -43,6 +43,14 @@ const Example: FC = () => {
       isLocked: locked.has('last_name'),
     },
     {
+      field: 'full_name',
+      header: 'Full Name',
+      render: data => `${data.first_name} ${data.last_name}`,
+      canHide: true,
+      isHidden: hidden.has('full_name'),
+      onHideClick: handleHide,
+    },
+    {
       field: 'email',
       canLock: true,
       canHide: true,
@@ -57,6 +65,9 @@ const Example: FC = () => {
     {
       field: 'ip_address',
       header: 'IP Address',
+      headerOptions: {
+        style: { backgroundColor: 'orange' },
+      },
     },
     {
       field: 'Notes',
@@ -64,7 +75,7 @@ const Example: FC = () => {
   ]
 
   return (
-    <div>
+    <div style={{ margin: 'auto', width: '75vw' }}>
       <DataGrid tableData={tableData} columnOptionsList={tableOptions} stickyHeaders />
     </div>
   )

@@ -16,6 +16,7 @@ const DataCell: FC<Props> = ({ value, columnOptions }) => {
       className='data-cell'
       style={{
         padding: '0.5rem',
+        minWidth: width,
         maxWidth: width,
         width,
         border: `1px solid ${SLATE}`,
