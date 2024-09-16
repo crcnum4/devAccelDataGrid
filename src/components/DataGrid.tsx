@@ -1,8 +1,8 @@
-import { CSSProperties, FC, HTMLAttributes } from 'react'
+import { FC, HTMLAttributes } from 'react'
 import { ColumnOptions, GridContent } from '../types/Grid'
 import React from 'react'
-import Header from './Header'
 import DataRow from './DataRow'
+import DataHeader from './DataHeader'
 
 type Props = {
   tableData: GridContent
@@ -14,71 +14,62 @@ type Props = {
 const DataGrid: FC<Props> = props => {
   //todo extract colOptions to locked and unlocked
 
-  const renderHeaders = () => {
-    const defaultStyle: CSSProperties = {
-      fontWeight: 'bold',
-      color: '111111',
-      display: 'flex',
-      flexDirection: 'row',
-    }
-
-    const StickyStyle: CSSProperties = {
-      position: 'sticky',
-      top: 0,
-      zIndex: 100,
-    }
-
-    const content = (
-      <div className='grid-header' style={defaultStyle}>
-        {props.columnOptionsList
-          .filter(option => {
-            if (option.isHidden) return false
-            return option.isLocked
-          })
-          .map(option => (
-            <Header key={`header_${option.field}`} options={option} />
-          ))}
-        {props.columnOptionsList
-          .filter(option => {
-            if (option.isHidden) return false
-            return !option.isLocked
-          })
-          .map(option => (
-            <Header key={`header_${option.field}`} options={option} />
-          ))}
-      </div>
-    )
-
-    return props.stickyHeaders ? (
-      <div className='sticky-wrapper' style={StickyStyle}>
-        {content}
-      </div>
-    ) : (
-      content
-    )
-  }
-
-  const renderContent = () => {
-    return props.tableData.map(data => <DataRow key={data.id} data={data} columOptionsList={props.columnOptionsList} />)
+  const renderContent = (filter: (o: ColumnOptions) => unknown) => {
+    return props.tableData.map(data => (
+      <DataRow key={data.id} data={data} columOptionsList={props.columnOptionsList.filter(filter)} />
+    ))
   }
 
   return (
     <div
-      className='grid-wapper'
+      className='grid-wrapper'
       style={{
         width: '100%',
         maxWidth: '90vw',
-        overflow: 'scroll',
+        overflowX: 'hidden',
+        overflowY: 'scroll',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         maxHeight: '65vh',
       }}
     >
-      {renderHeaders()}
-      {/* render Filters */}
-      {/* renderBody */}
-      <div id='grid-body' style={{ display: 'flex', flexDirection: 'column' }}>
-        {renderContent()}
+      <div
+        className='locked-wrapper'
+        style={{
+          width: 'auto',
+          maxWidth: '55vw',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <DataHeader
+          stickyHeaders={props.stickyHeaders}
+          columnOptionsList={props.columnOptionsList.filter(option => option.isLocked)}
+        />
+        <div className='grid-body' style={{ display: 'flex', flexDirection: 'column' }}>
+          {renderContent(option => option.isLocked)}
+        </div>
+      </div>
+      <div
+        className='unlocked-wapper'
+        style={{
+          width: '100%',
+          maxWidth: '90vw',
+          overflow: 'scroll',
+          display: 'flex',
+          flexDirection: 'column',
+          // maxHeight: '65vh',
+        }}
+      >
+        <DataHeader
+          stickyHeaders={props.stickyHeaders}
+          columnOptionsList={props.columnOptionsList.filter(option => !option.isLocked)}
+        />
+        {/* render Filters */}
+        {/* renderBody */}
+        <div className='grid-body' style={{ display: 'flex', flexDirection: 'column' }}>
+          {renderContent(option => !option.isLocked)}
+        </div>
       </div>
     </div>
   )

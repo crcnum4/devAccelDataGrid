@@ -8,9 +8,9 @@ type Props = {
 }
 
 const DataRow: FC<Props> = ({ data, columOptionsList }) => {
-  const renderCells = () => {
+  const renderCells = (filter: (o: ColumnOptions) => boolean) => {
     return columOptionsList
-      .filter(o => !o.isHidden)
+      .filter(filter)
       .map(option => (
         <DataCell
           key={`${data['id']}_${option.field}`}
@@ -28,7 +28,7 @@ const DataRow: FC<Props> = ({ data, columOptionsList }) => {
         flexDirection: 'row',
       }}
     >
-      {renderCells()}
+      {renderCells(option => !option.isHidden)}
     </div>
   )
 }

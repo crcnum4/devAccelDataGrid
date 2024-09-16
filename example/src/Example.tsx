@@ -26,6 +26,7 @@ const Example: FC = () => {
     {
       field: 'id',
       header: 'ID',
+      isLocked: true,
     },
     {
       field: 'first_name',
