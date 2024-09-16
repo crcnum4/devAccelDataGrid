@@ -3,6 +3,7 @@ import { ColumnOptions, GridContent } from '../types/Grid'
 import React from 'react'
 import DataRow from './DataRow'
 import DataHeader from './DataHeader'
+import '../styles/main.css'
 
 type Props = {
   tableData: GridContent
@@ -56,7 +57,7 @@ const DataGrid: FC<Props> = props => {
       }}
     >
       <div
-        className='locked-wrapper'
+        className='locked-wrapper hidden-scroll'
         ref={lockedRef}
         style={{
           width: 'auto',
