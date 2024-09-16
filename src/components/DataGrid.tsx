@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes } from 'react'
+import { FC, HTMLAttributes, useEffect, useRef } from 'react'
 import { ColumnOptions, GridContent } from '../types/Grid'
 import React from 'react'
 import DataRow from './DataRow'
@@ -12,6 +12,28 @@ type Props = {
 }
 
 const DataGrid: FC<Props> = props => {
+  const lockedRef = useRef<HTMLDivElement>(null)
+  const unlockedRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const lTable = lockedRef.current
+    const ulTable = unlockedRef.current
+
+    if (!lTable || !ulTable) return
+
+    const handleScroll = (source: HTMLDivElement, target: HTMLDivElement) => {
+      target.scrollTop = source.scrollTop
+    }
+
+    lTable.addEventListener('scroll', () => handleScroll(lTable, ulTable))
+    ulTable.addEventListener('scroll', () => handleScroll(ulTable, lTable))
+
+    return () => {
+      lTable.removeEventListener('scroll', () => handleScroll(lTable, ulTable))
+      ulTable.removeEventListener('scroll', () => handleScroll(ulTable, lTable))
+    }
+  })
+
   //todo extract colOptions to locked and unlocked
 
   const renderContent = (filter: (o: ColumnOptions) => unknown) => {
@@ -27,7 +49,7 @@ const DataGrid: FC<Props> = props => {
         width: '100%',
         maxWidth: '90vw',
         overflowX: 'hidden',
-        overflowY: 'scroll',
+        overflowY: 'hidden',
         display: 'flex',
         flexDirection: 'row',
         maxHeight: '65vh',
@@ -35,11 +57,13 @@ const DataGrid: FC<Props> = props => {
     >
       <div
         className='locked-wrapper'
+        ref={lockedRef}
         style={{
           width: 'auto',
           maxWidth: '55vw',
           display: 'flex',
           flexDirection: 'column',
+          overflow: 'scroll',
         }}
       >
         <DataHeader
@@ -52,6 +76,7 @@ const DataGrid: FC<Props> = props => {
       </div>
       <div
         className='unlocked-wapper'
+        ref={unlockedRef}
         style={{
           width: '100%',
           maxWidth: '90vw',
