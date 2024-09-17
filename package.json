@@ -1,6 +1,6 @@
 {
   "name": "devaccel-data-grid",
-  "version": "1.0.24",
+  "version": "1.0.25-beta.1",
   "description": "Dynamic table library.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
