@@ -22,7 +22,7 @@ const Example: FC = () => {
     setHidden(new Set(hidden).add(field))
   }
 
-  const tableOptions: ColumnOptions[] = [
+  const [tableOptions, setTableOption] = useState<ColumnOptions[]>([
     {
       field: 'id',
       header: 'ID',
@@ -73,7 +73,17 @@ const Example: FC = () => {
     {
       field: 'Notes',
     },
-  ]
+  ])
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const updateOptions = (field: string, key: string, value: any) => {
+    const i = tableOptions.findIndex(option => option.field === field)
+    tableOptions[i] = {
+      ...tableOptions[i],
+      [key]: value,
+    }
+    setTableOption(tableOptions)
+  }
 
   return (
     <div style={{ margin: 'auto', width: '75vw' }}>

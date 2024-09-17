@@ -1,5 +1,7 @@
 import { CSSProperties, ReactNode } from 'react'
 
+export type onChangeFunc = (field: string, key: string, value: any, current: ColumnOptions) => void
+
 export type GridData = {
   [key: string]: any
 }
@@ -15,6 +17,7 @@ export type GridContent = GridData[]
 export type ColumnOptions = {
   field: string
   width?: CSSProperties['width']
+  onWidthChange?: (newWidth: number) => void
   header?: string
   headerOptions?: HeaderOptions
   getValue?: (data: GridData) => any

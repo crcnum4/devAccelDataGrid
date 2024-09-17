@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes, useEffect, useRef } from 'react'
-import { ColumnOptions, GridContent } from '../types/Grid'
+import { ColumnOptions, GridContent, onChangeFunc } from '../types/Grid'
 import React from 'react'
 import DataRow from './DataRow'
 import DataHeader from './DataHeader'
@@ -10,6 +10,7 @@ type Props = {
   columnOptionsList: ColumnOptions[]
   stickyHeaders?: boolean
   tableProps?: HTMLAttributes<HTMLDivElement>
+  onChange?: onChangeFunc
 }
 
 const DataGrid: FC<Props> = props => {
