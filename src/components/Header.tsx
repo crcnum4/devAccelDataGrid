@@ -20,10 +20,12 @@ const Header: FC<Props> = ({ options, onChange }) => {
   }
 
   const stopResizing = () => {
+    console.log('stop')
     setIsResizing(false)
   }
 
   const resizing = (e: MouseEvent) => {
+    console.log(resizing)
     if (isResizing && divRef.current) {
       const newWidth = e.clientX - divRef.current.getBoundingClientRect().left
       if (!options.onWidthChange) {
@@ -116,14 +118,14 @@ const Header: FC<Props> = ({ options, onChange }) => {
       <div
         style={{
           zIndex: 10,
-          width: 3,
+          width: 10,
           cursor: 'ew-resize',
           backgroundColor: 'transparent',
           margin: 0,
           padding: 0,
         }}
         ref={divRef}
-        onMouseDown={() => startResizing}
+        onMouseDown={startResizing}
       ></div>
     </div>
   )
