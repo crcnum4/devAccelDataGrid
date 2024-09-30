@@ -1,5 +1,7 @@
 import { CSSProperties, ReactNode } from 'react'
 
+export type onChangeFunc = (field: string, key: string, value: any) => void
+
 export type GridData = {
   [key: string]: any
 }

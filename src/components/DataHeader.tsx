@@ -1,11 +1,12 @@
 import { CSSProperties, FC } from 'react'
-import { ColumnOptions } from '../types'
+import { ColumnOptions, onChangeFunc } from '../types'
 import React from 'react'
 import Header from './Header'
 
 type Props = {
   columnOptionsList: ColumnOptions[]
   stickyHeaders?: boolean
+  onChange?: onChangeFunc
 }
 
 const DataHeader: FC<Props> = props => {

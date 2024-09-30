@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
-import { ColumnOptions } from '../types/Grid'
+import { ColumnOptions, onChangeFunc } from '../types/Grid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons'
 import { LIGHT_BLUE, SLATE } from '../types'
 
 type Props = {
   options: ColumnOptions
+  onChange?: onChangeFunc
 }
 
 const Header: FC<Props> = ({ options }) => {
