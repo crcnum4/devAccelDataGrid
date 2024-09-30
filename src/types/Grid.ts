@@ -1,6 +1,7 @@
 import { CSSProperties, ReactNode } from 'react'
 
 export type onChangeFunc = (field: string, key: string, value: any) => void
+export type ResizeFunc = (field: string, position: number) => void
 
 export type GridData = {
   [key: string]: any

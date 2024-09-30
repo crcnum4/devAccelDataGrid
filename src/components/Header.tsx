@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { ColumnOptions, onChangeFunc } from '../types/Grid'
+import { ColumnOptions, ResizeFunc, onChangeFunc } from '../types/Grid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons'
 import { LIGHT_BLUE, SLATE } from '../types'
@@ -7,9 +7,10 @@ import { LIGHT_BLUE, SLATE } from '../types'
 type Props = {
   options: ColumnOptions
   onChange?: onChangeFunc
+  onResize: ResizeFunc
 }
 
-const Header: FC<Props> = ({ options }) => {
+const Header: FC<Props> = ({ options, onResize }) => {
   const { width = '180px' } = options
 
   if (options.headerOptions?.headerRender) {
@@ -34,7 +35,7 @@ const Header: FC<Props> = ({ options }) => {
   return (
     <div
       style={{
-        padding: '.5em',
+        padding: '0.5rem',
         display: 'flex',
         flexDirection: 'row',
         border: `1px solid ${SLATE}`,
@@ -46,10 +47,22 @@ const Header: FC<Props> = ({ options }) => {
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         textAlign: 'center',
+        position: 'relative',
         ...options.headerOptions?.style,
       }}
       className='data-header'
     >
+      <div
+        style={{
+          position: 'absolute',
+          right: 0,
+          zIndex: 100,
+          cursor: 'ew-resize',
+          height: '100%',
+          width: '10px',
+        }}
+        onMouseDown={e => onResize(options.field, e.clientX)}
+      />
       {options.canLock && (
         <FontAwesomeIcon
           icon={options.isLocked ? faLockOpen : faLock}

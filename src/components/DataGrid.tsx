@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, useEffect, useRef } from 'react'
+import { FC, HTMLAttributes, useEffect, useRef, useState } from 'react'
 import { ColumnOptions, GridContent, onChangeFunc } from '../types/Grid'
 import React from 'react'
 import DataRow from './DataRow'
@@ -13,15 +13,45 @@ type Props = {
   onChange?: onChangeFunc
 }
 
+type ResizeObj =
+  | {
+      field: string
+      startingPos: number
+    }
+  | {
+      field: null
+      startingPos: null
+    }
+
 const DataGrid: FC<Props> = props => {
+  const [resizeObj, setResizeObj] = useState<ResizeObj>({ field: null, startingPos: null })
   const lockedRef = useRef<HTMLDivElement>(null)
   const unlockedRef = useRef<HTMLDivElement>(null)
+  const masterRef = useRef<HTMLDivElement>(null)
+
+  const startResizing = (field: string, position: number) => {
+    setResizeObj({ field, startingPos: position })
+  }
+
+  const stopResizing = () => {
+    setResizeObj({ field: null, startingPos: null })
+  }
+
+  const resizing = (e: MouseEvent) => {
+    if (resizeObj.field === null) return
+    if (!props.onChange) {
+      throw new Error('Missing change prop')
+    }
+    const newWidth = e.clientX - resizeObj.startingPos
+    props.onChange(resizeObj.field, 'width', newWidth)
+  }
 
   useEffect(() => {
     const lTable = lockedRef.current
     const ulTable = unlockedRef.current
+    const mRef = masterRef.current
 
-    if (!lTable || !ulTable) return
+    if (!lTable || !ulTable || !mRef) return
 
     const handleScroll = (source: HTMLDivElement, target: HTMLDivElement) => {
       target.scrollTop = source.scrollTop
@@ -29,10 +59,14 @@ const DataGrid: FC<Props> = props => {
 
     lTable.addEventListener('scroll', () => handleScroll(lTable, ulTable))
     ulTable.addEventListener('scroll', () => handleScroll(ulTable, lTable))
+    mRef.addEventListener('mouseup', stopResizing)
+    mRef.addEventListener('mousemove', resizing)
 
     return () => {
       lTable.removeEventListener('scroll', () => handleScroll(lTable, ulTable))
       ulTable.removeEventListener('scroll', () => handleScroll(ulTable, lTable))
+      mRef.removeEventListener('mouseup', stopResizing)
+      mRef.removeEventListener('mousemove', resizing)
     }
   })
 
@@ -71,6 +105,7 @@ const DataGrid: FC<Props> = props => {
         <DataHeader
           stickyHeaders={props.stickyHeaders}
           columnOptionsList={props.columnOptionsList.filter(option => option.isLocked)}
+          onResize={startResizing}
         />
         <div className='grid-body' style={{ display: 'flex', flexDirection: 'column' }}>
           {renderContent(option => option.isLocked)}
@@ -91,6 +126,7 @@ const DataGrid: FC<Props> = props => {
         <DataHeader
           stickyHeaders={props.stickyHeaders}
           columnOptionsList={props.columnOptionsList.filter(option => !option.isLocked)}
+          onResize={startResizing}
         />
         {/* render Filters */}
         {/* renderBody */}
