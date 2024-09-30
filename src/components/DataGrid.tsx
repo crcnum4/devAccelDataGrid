@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, useEffect, useRef } from 'react'
+import { FC, HTMLAttributes, useEffect, useRef, useState } from 'react'
 import { ColumnOptions, GridContent, onChangeFunc } from '../types/Grid'
 import React from 'react'
 import DataRow from './DataRow'
@@ -13,9 +13,36 @@ type Props = {
   onChange?: onChangeFunc
 }
 
+const minWidth = 25
+
 const DataGrid: FC<Props> = props => {
   const lockedRef = useRef<HTMLDivElement>(null)
   const unlockedRef = useRef<HTMLDivElement>(null)
+  const masterRef = useRef<HTMLDivElement>(null)
+  const [resizeObj, setResizeObj] = useState<{ index: null; field: null } | { index: number; field: string }>({
+    index: null,
+    field: null,
+  })
+
+  const startResizing = (position: number, field: string) => {
+    setResizeObj({ index: position, field })
+  }
+
+  const stopResizing = () => {
+    setResizeObj({ index: null, field: null })
+  }
+
+  const resizing = (e: MouseEvent) => {
+    console.log('m')
+    if (resizeObj.index !== null) {
+      if (!props.onChange) {
+        throw new Error('Missing change prop')
+      }
+      console.log(e.clientX, '-', resizeObj.index)
+      const newWidth = e.clientX - resizeObj.index
+      props.onChange(resizeObj.field, 'width', newWidth < minWidth ? minWidth : newWidth)
+    }
+  }
 
   useEffect(() => {
     const lTable = lockedRef.current
@@ -33,6 +60,19 @@ const DataGrid: FC<Props> = props => {
     return () => {
       lTable.removeEventListener('scroll', () => handleScroll(lTable, ulTable))
       ulTable.removeEventListener('scroll', () => handleScroll(ulTable, lTable))
+    }
+  })
+
+  useEffect(() => {
+    const mref = masterRef.current
+    if (!mref) return
+
+    mref.addEventListener('mousemove', resizing)
+    mref.addEventListener('mouseup', stopResizing)
+
+    return () => {
+      mref.removeEventListener('mousemove', resizing)
+      mref.removeEventListener('mouseup', stopResizing)
     }
   })
 
@@ -71,6 +111,7 @@ const DataGrid: FC<Props> = props => {
         <DataHeader
           stickyHeaders={props.stickyHeaders}
           columnOptionsList={props.columnOptionsList.filter(option => option.isLocked)}
+          onResize={startResizing}
         />
         <div className='grid-body' style={{ display: 'flex', flexDirection: 'column' }}>
           {renderContent(option => option.isLocked)}
@@ -91,6 +132,8 @@ const DataGrid: FC<Props> = props => {
         <DataHeader
           stickyHeaders={props.stickyHeaders}
           columnOptionsList={props.columnOptionsList.filter(option => !option.isLocked)}
+          onChange={props.onChange}
+          onResize={startResizing}
         />
         {/* render Filters */}
         {/* renderBody */}

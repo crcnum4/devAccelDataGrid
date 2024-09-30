@@ -1,11 +1,13 @@
 import { CSSProperties, FC } from 'react'
-import { ColumnOptions } from '../types'
+import { ColumnOptions, onChangeFunc } from '../types'
 import React from 'react'
 import Header from './Header'
 
 type Props = {
   columnOptionsList: ColumnOptions[]
   stickyHeaders?: boolean
+  onChange?: onChangeFunc
+  onResize: (position: number, field: string) => void
 }
 
 const DataHeader: FC<Props> = props => {
@@ -27,7 +29,7 @@ const DataHeader: FC<Props> = props => {
       {props.columnOptionsList
         .filter(option => !option.isHidden)
         .map(option => (
-          <Header key={`header_${option.field}`} options={option} />
+          <Header key={`header_${option.field}`} options={option} onChange={props.onChange} onResize={props.onResize} />
         ))}
     </div>
   )
