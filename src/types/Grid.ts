@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode } from 'react'
 
 export type onChangeFunc = (field: string, key: string, value: any) => void
-export type ResizeFunc = (field: string, position: number) => void
+export type ResizeFunc = (field: string, width: number) => void
 
 export type GridData = {
   [key: string]: any
@@ -17,7 +17,7 @@ export type GridContent = GridData[]
 
 export type ColumnOptions = {
   field: string
-  width?: CSSProperties['width']
+  width?: number
   header?: string
   headerOptions?: HeaderOptions
   getValue?: (data: GridData) => any
@@ -27,7 +27,7 @@ export type ColumnOptions = {
   isHidden?: boolean
   canLock?: boolean
   canHide?: boolean
-  onLockClick?: (field: string, isLocked?: boolean) => void
+  onLockClick?: (field: string, isLocked: boolean) => void
   onHideClick?: (field: string) => void
   // sortable?: boolean
   // sorter: (a: GridData, b: GridData) => -1 | 0 | 1

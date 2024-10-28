@@ -11,7 +11,7 @@ type Props = {
 }
 
 const Header: FC<Props> = ({ options, onResize }) => {
-  const { width = '180px' } = options
+  const { width = 180, isLocked = false } = options
 
   if (options.headerOptions?.headerRender) {
     return options.headerOptions.headerRender
@@ -21,7 +21,7 @@ const Header: FC<Props> = ({ options, onResize }) => {
     if (!options.onLockClick) {
       throw new Error('Missing onLockClick for lockable column')
     }
-    options.onLockClick(field, options.isLocked)
+    options.onLockClick(field, isLocked)
   }
 
   const handleHideClick = (field: string) => {
@@ -61,7 +61,10 @@ const Header: FC<Props> = ({ options, onResize }) => {
           height: '100%',
           width: '10px',
         }}
-        onMouseDown={e => onResize(options.field, e.clientX)}
+        onMouseDown={e => {
+          console.log(e.clientX)
+          onResize(options.field, width)
+        }}
       />
       {options.canLock && (
         <FontAwesomeIcon

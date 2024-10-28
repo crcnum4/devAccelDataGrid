@@ -4,6 +4,8 @@ import React from 'react'
 import DataRow from './DataRow'
 import DataHeader from './DataHeader'
 import '../styles/main.css'
+import { FilterOptions } from '../types/Filter'
+import { ModalProvider } from './ModalProvider'
 
 type Props = {
   tableData: GridContent
@@ -11,38 +13,47 @@ type Props = {
   stickyHeaders?: boolean
   tableProps?: HTMLAttributes<HTMLDivElement>
   onChange?: onChangeFunc
+  filterOptions?: FilterOptions
 }
 
 type ResizeObj =
   | {
       field: string
       startingPos: number
+      width: number
     }
   | {
       field: null
       startingPos: null
+      width: null
     }
 
 const DataGrid: FC<Props> = props => {
-  const [resizeObj, setResizeObj] = useState<ResizeObj>({ field: null, startingPos: null })
+  const [resizeObj, setResizeObj] = useState<ResizeObj>({ field: null, startingPos: null, width: null })
+  const [mousePos, setMousePos] = useState(0)
   const lockedRef = useRef<HTMLDivElement>(null)
   const unlockedRef = useRef<HTMLDivElement>(null)
   const masterRef = useRef<HTMLDivElement>(null)
 
-  const startResizing = (field: string, position: number) => {
-    setResizeObj({ field, startingPos: position })
+  const startResizing = (field: string, width: number) => {
+    console.log('resize start', field)
+    setResizeObj({ field, startingPos: mousePos, width })
   }
 
   const stopResizing = () => {
-    setResizeObj({ field: null, startingPos: null })
+    console.log('stop resize')
+    setResizeObj({ field: null, startingPos: null, width: null })
   }
 
   const resizing = (e: MouseEvent) => {
-    if (resizeObj.field === null) return
+    if (resizeObj.field === null) {
+      setMousePos(e.clientX)
+      return
+    }
     if (!props.onChange) {
       throw new Error('Missing change prop')
     }
-    const newWidth = e.clientX - resizeObj.startingPos
+    const newWidth = resizeObj.width + (e.clientX - resizeObj.startingPos)
     props.onChange(resizeObj.field, 'width', newWidth)
   }
 
@@ -79,62 +90,65 @@ const DataGrid: FC<Props> = props => {
   }
 
   return (
-    <div
-      className='grid-wrapper'
-      style={{
-        width: '100%',
-        maxWidth: '90vw',
-        overflowX: 'hidden',
-        overflowY: 'hidden',
-        display: 'flex',
-        flexDirection: 'row',
-        maxHeight: '65vh',
-      }}
-    >
+    <ModalProvider>
       <div
-        className='locked-wrapper hidden-scroll'
-        ref={lockedRef}
-        style={{
-          width: 'auto',
-          maxWidth: '55vw',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'scroll',
-        }}
-      >
-        <DataHeader
-          stickyHeaders={props.stickyHeaders}
-          columnOptionsList={props.columnOptionsList.filter(option => option.isLocked)}
-          onResize={startResizing}
-        />
-        <div className='grid-body' style={{ display: 'flex', flexDirection: 'column' }}>
-          {renderContent(option => option.isLocked)}
-        </div>
-      </div>
-      <div
-        className='unlocked-wapper'
-        ref={unlockedRef}
+        className='grid-wrapper'
         style={{
           width: '100%',
           maxWidth: '90vw',
-          overflow: 'scroll',
+          overflowX: 'hidden',
+          overflowY: 'hidden',
           display: 'flex',
-          flexDirection: 'column',
-          // maxHeight: '65vh',
+          flexDirection: 'row',
+          maxHeight: '65vh',
         }}
+        ref={masterRef}
       >
-        <DataHeader
-          stickyHeaders={props.stickyHeaders}
-          columnOptionsList={props.columnOptionsList.filter(option => !option.isLocked)}
-          onResize={startResizing}
-        />
-        {/* render Filters */}
-        {/* renderBody */}
-        <div className='grid-body' style={{ display: 'flex', flexDirection: 'column' }}>
-          {renderContent(option => !option.isLocked)}
+        <div
+          className='locked-wrapper hidden-scroll'
+          ref={lockedRef}
+          style={{
+            width: 'auto',
+            maxWidth: '55vw',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'scroll',
+          }}
+        >
+          <DataHeader
+            stickyHeaders={props.stickyHeaders}
+            columnOptionsList={props.columnOptionsList.filter(option => option.isLocked)}
+            onResize={startResizing}
+          />
+          <div className='grid-body' style={{ display: 'flex', flexDirection: 'column' }}>
+            {renderContent(option => option.isLocked)}
+          </div>
+        </div>
+        <div
+          className='unlocked-wapper'
+          ref={unlockedRef}
+          style={{
+            width: '100%',
+            maxWidth: '90vw',
+            overflow: 'scroll',
+            display: 'flex',
+            flexDirection: 'column',
+            // maxHeight: '65vh',
+          }}
+        >
+          <DataHeader
+            stickyHeaders={props.stickyHeaders}
+            columnOptionsList={props.columnOptionsList.filter(option => !option.isLocked)}
+            onResize={startResizing}
+          />
+          {/* render Filters */}
+          {/* renderBody */}
+          <div className='grid-body' style={{ display: 'flex', flexDirection: 'column' }}>
+            {renderContent(option => !option.isLocked)}
+          </div>
         </div>
       </div>
-    </div>
+    </ModalProvider>
   )
 }
 

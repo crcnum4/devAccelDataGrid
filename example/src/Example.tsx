@@ -6,23 +6,16 @@ import DataGrid from 'devaccel-data-grid/dist/esm/components/DataGrid'
 
 const Example: FC = () => {
   const [tableData] = useState<GridData[]>(data)
-  const [hidden, setHidden] = useState<Set<string>>(new Set())
-  const [locked, setLocked] = useState<Set<string>>(new Set(['id']))
 
-  const handleLock = (field: string) => {
-    if (locked.has(field)) {
-      locked.delete(field)
-      setLocked(new Set(locked))
-    } else {
-      setLocked(new Set(locked).add(field))
-    }
+  const handleLock = (field: string, isLocked?: boolean) => {
+    updateOptions(field, 'isLocked', !isLocked)
   }
 
   const handleHide = (field: string): void => {
-    setHidden(new Set(hidden).add(field))
+    updateOptions(field, 'isHidden', true)
   }
 
-  const tableOptions: ColumnOptions[] = [
+  const [tableOptions, setTableOptions] = useState<ColumnOptions[]>([
     {
       field: 'id',
       header: 'ID',
@@ -33,22 +26,22 @@ const Example: FC = () => {
       canLock: true,
       canHide: true,
       onHideClick: handleHide,
-      isHidden: hidden.has('first_name'),
+      isHidden: false,
       onLockClick: handleLock,
-      isLocked: locked.has('first_name'),
+      isLocked: false,
     },
     {
       field: 'last_name',
       canLock: true,
       onLockClick: handleLock,
-      isLocked: locked.has('last_name'),
+      isLocked: false,
     },
     {
       field: 'full_name',
       header: 'Full Name',
       render: data => `${data.first_name} ${data.last_name}`,
       canHide: true,
-      isHidden: hidden.has('full_name'),
+      isHidden: false,
       onHideClick: handleHide,
     },
     {
@@ -56,9 +49,9 @@ const Example: FC = () => {
       canLock: true,
       canHide: true,
       onHideClick: handleHide,
-      isHidden: hidden.has('email'),
+      isHidden: false,
       onLockClick: handleLock,
-      isLocked: locked.has('email'),
+      isLocked: false,
     },
     {
       field: 'gender',
@@ -73,11 +66,27 @@ const Example: FC = () => {
     {
       field: 'Notes',
     },
-  ]
+  ])
+
+  const updateOptions = (field: string, key: string, value: any) => {
+    const i = tableOptions.findIndex(option => option.field === field)
+    if (i === -1) {
+      throw new Error('Invalid Id')
+    }
+    //because of array spread options we need previousState
+    setTableOptions(previousOptions => {
+      const newOptions = [...previousOptions]
+      newOptions[i] = {
+        ...previousOptions[i],
+        [key]: value,
+      }
+      return newOptions
+    })
+  }
 
   return (
     <div style={{ margin: 'auto', width: '75vw' }}>
-      <DataGrid tableData={tableData} columnOptionsList={tableOptions} stickyHeaders />
+      <DataGrid tableData={tableData} columnOptionsList={tableOptions} stickyHeaders onChange={updateOptions} />
     </div>
   )
 }
