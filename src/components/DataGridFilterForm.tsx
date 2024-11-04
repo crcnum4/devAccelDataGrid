@@ -278,7 +278,7 @@ const DataGridFilterForm: FC<Props> = ({ filterOption, columnOption }) => {
 
   const handleApply = (e: React.FormEvent) => {
     e.preventDefault()
-    filterOption.onChange(query, filterOption.field)
+    filterOption.onChange(query.value, filterOption.field)
   }
 
   return (
