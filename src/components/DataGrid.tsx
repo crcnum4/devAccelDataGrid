@@ -3,9 +3,14 @@ import { ColumnOptions, GridContent, onChangeFunc } from '../types/Grid'
 import React from 'react'
 import DataRow from './DataRow'
 import DataHeader from './DataHeader'
-import '../styles/main.css'
 import { FilterOptions } from '../types/Filter'
 import { ModalProvider } from './ModalProvider'
+
+const hiddenScrollStyle = `
+  .hidden-scroll::-webkit-scrollbar {
+    display: none;
+  }
+`
 
 type Props = {
   tableData: GridContent
@@ -34,6 +39,16 @@ const DataGrid: FC<Props> = props => {
   const lockedRef = useRef<HTMLDivElement>(null)
   const unlockedRef = useRef<HTMLDivElement>(null)
   const masterRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const styleElement = document.createElement('style')
+    styleElement.textContent = hiddenScrollStyle
+    document.head.appendChild(styleElement)
+
+    return () => {
+      document.head.removeChild(styleElement)
+    }
+  }, [])
 
   const startResizing = (field: string, width: number) => {
     console.log('resize start', field)
