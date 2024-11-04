@@ -22,7 +22,7 @@ export type FormOptions =
     }
   | {
       type: DG_DATA_TYPES.String
-      maxChars: number
+      maxChars?: number
       currentValue: string | null
     }
   | {
@@ -31,7 +31,7 @@ export type FormOptions =
       futureAllowed?: boolean
       floor?: Date
       ceiling?: Date
-      allowedFilters: DateFilterOptions[]
+      allowedFilters?: DateFilterOptions[]
       currentValue: DateFilter
     }
   | {
@@ -54,7 +54,7 @@ export type FormOption = FormOptions & FilterFormRender
 
 export type FilterOption = {
   field: string
-  onChange: (newValue: any, field: string) => void
+  onChange: (newValue: string | NumberFilter | DateFilter | null, field: string) => void
   formatter?: (formOption: FormOption, field: string) => string
   formOption: FormOption
 }
